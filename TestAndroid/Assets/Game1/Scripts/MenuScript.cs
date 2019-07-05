@@ -1,38 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour {
 
-    public GameObject PopUp;
-
-   
     public void pauseGame()
     {
-        PopUp.SetActive(true);
+        GameData.instance.pausePopUp.SetActive(true);
         
     }
     public void continueGame()
     {
-        PopUp.SetActive(false);
+        GameData.instance.pausePopUp.SetActive(false);
        
     }
 
-    //public void RestartGame()
-    //{
-    //    //mainmenu
-    //    Application.LoadLevel(0); 
-    //    //
-    //}
+    public void RestartLevel()
+    {
+       SceneManager.LoadScene(PlayerPrefs.GetInt("SelectedLevel"));        
+    }
 
     public void NextButtonClickEvent()
     {
-        Application.LoadLevel("LevelsPage");
+        SceneManager.LoadScene("LevelsPage");
 
     }
 
     public void ChangeToScene(string sceneToChangeTo)
     {
-        Application.LoadLevel(sceneToChangeTo);
+        SceneManager.LoadScene(sceneToChangeTo);
     }
 
     public void exitGame()

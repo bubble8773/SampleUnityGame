@@ -28,12 +28,12 @@ IEnumerator  CoinSpawning()
 	yield return new WaitForSeconds (0.3f);
 		for(int i = 0; i <= coinNum; i++){
 		while (coinTimer >= 5) {
-			yield return new WaitForSeconds (0.3f);
+			yield return new WaitForSeconds (5.3f);
 				//coin_spawn_pos = new Vector3 (Random.Range (-451,577), 46.0f, Random.Range (-18, 365));
                 coin_spawn_pos = new Vector3(Random.Range(maxWidth, -maxWidth), 46.0f, Random.Range(maxHeight, -maxHeight));    
                 Instantiate(coin, coin_spawn_pos, Quaternion.identity);
 			
-			yield return new WaitForSeconds (1.0f);
+			yield return new WaitForSeconds (5.0f);
 		}
 		yield return new WaitForSeconds(Random.Range(3.0f, 4.0f));
 	}

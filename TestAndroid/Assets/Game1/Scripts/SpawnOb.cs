@@ -3,47 +3,59 @@ using System.Collections;
 
 public class SpawnOb : MonoBehaviour {
 
-	public GameObject cylinder;
-	public float timer;
-
+	//public GameObject enemy;
 	public int objNum;
 	Vector3 spawn_pos;
 
-    private float maxWidth, maxHeight;
-
-    public float objLifeTime;
+    private float maxWidth, maxHeight, timer;
+    private int health;
+    
     // Use this for initialization
     void Start () {
-
-
+        
 		timer = 0.0f;
 		//objNum = 20;
         maxWidth = Screen.width;
         maxHeight =  Screen.height;
 		StartCoroutine (simpleSpawning ());
-        Destroy (gameObject, objLifeTime);
-        }
+        health = 3;
+    }
 	
 	IEnumerator  simpleSpawning()
 	{
 		yield return new WaitForSeconds (1.0f);
 		for(int i = 0; i <= objNum; i++){
 			while (timer >= 0) {
-				yield return new WaitForSeconds (2.0f);
-                spawn_pos = new Vector3(Random.Range(-maxWidth, maxWidth), 0.0f, Random.Range(-maxHeight, maxHeight));    //Random.Range (-417, 727), 0.0f, Random.Range (195,-200));
+				yield return new WaitForSeconds (5.0f);
+                spawn_pos =  new Vector3 (Random.Range(-1000, 195),0.0f, 0.0f ); //new Vector3(Random.Range(-maxWidth, maxWidth), 0.0f, Random.Range(-maxHeight, maxHeight));
 
-                Instantiate(cylinder, spawn_pos, Quaternion.identity);
+        Instantiate(this, spawn_pos, Quaternion.identity);
                 
-                yield return new WaitForSeconds (2.0f);
+                yield return new WaitForSeconds (5.0f);
 			}
 			yield return new WaitForSeconds(Random.Range(3.0f, 4.0f));
           
         }
 	}
 
-  
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Bullet")
+        {
+            health--;
+            if (health == 0)
+            {
+                //this.gameObject.SetActive(false);
+                Destroy(this.gameObject);
+                Debug.Log("Enemy distroyed");
 
-	void FixedUpdate () {
+            }
+        }
+        Debug.Log("Enemy health = " +health);
+    }
+
+
+    void FixedUpdate () {
 		timer += Time.deltaTime;
 		if (timer >= 10) {
 			

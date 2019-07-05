@@ -1,34 +1,37 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameData : MonoBehaviour {
     
     public Text scoreText;
-    public GameObject pausePopUp;
-    int score;
     public float timer;
-
-    public Text coinText;
-    int coins;
-    int unlockedLevelIndex;
     public Text levelName;
+    public GameObject gameWinPopUP, gameOverPopUp, pausePopUp;
+    public Text coinText;
 
-    public GameObject gameWinPopUP, gameOverPopUp;
+    public static GameData instance;
 
-    
+    int coins, score;
+    int level, unlockedLevelIndex;
+     
 
     // Use this for initialization
     void Start()
     {
+        instance = this;
+        gameOverPopUp.SetActive(false);
+        gameWinPopUP.SetActive(false);
+        pausePopUp.SetActive(false);
         score = 0;
         timer = 0.0f;
-
         //Cursor.visible = false;
         coins = 8;
-        levelName.text = "Level: " + PlayerPrefs.GetInt("SelectedLevel");
+        level = PlayerPrefs.GetInt("SelectedLevel");
+        levelName.text = "Level: " + level;
         PlayerPrefs.SetInt("LevelComplete", 0);
-
+        
     }
 
 
@@ -39,11 +42,12 @@ public class GameData : MonoBehaviour {
         if (other.GetComponent<Collider>().tag == "Diamond")//"Coin") 
         {
             Destroy(other.gameObject);
-            coins += 1;
+            coins++;
 
         }
         else if (other.GetComponent<Collider>().tag == "Enemy")
                    gameOverPopUp.SetActive(true);
+        
 
         //levelcomplete condition
         if (coins == 10)
@@ -52,16 +56,13 @@ public class GameData : MonoBehaviour {
             // unlock the next level
             if (PlayerPrefs.GetInt("LevelComplete") == 1)
             {
-                unlockedLevelIndex = PlayerPrefs.GetInt("SelectedLevel") + 1;
+                unlockedLevelIndex = level + 1;
                 PlayerPrefs.SetInt("UnlockedLevel", unlockedLevelIndex);
-
-                Debug.Log(PlayerPrefs.GetInt("UnlockLevel"));
+                Debug.Log(PlayerPrefs.GetInt("UnlockedLevel"));
             }
-            //Application.LoadLevel(5);//gamewin
+           
             gameWinPopUP.SetActive(true);
            
-
-
         }
     }
 
